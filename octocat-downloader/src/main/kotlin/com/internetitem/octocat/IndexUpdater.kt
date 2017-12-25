@@ -8,11 +8,11 @@ object IndexUpdater {
         val parsedFeed = FeedParser.toOctocatIndex(feedBytes)
         val newIndexJson = parsedFeed.toJson()
 
-        val oldIndexJson = IndexStorage.FilesystemIndexStorage.fetch(destination)
+        val oldIndexJson = IndexStorage.fetchFromPath(destination)
         if (Arrays.equals(newIndexJson, oldIndexJson)) {
             return false
         } else {
-            IndexStorage.FilesystemIndexStorage.store(destination, newIndexJson)
+            IndexStorage.storeToPath(destination, newIndexJson)
             return true
         }
     }
