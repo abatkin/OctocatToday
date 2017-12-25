@@ -1,7 +1,5 @@
 package com.internetitem.octocat
 
-import com.internetitem.octocat.util.INDEX_FILE
-import java.io.File
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
@@ -9,16 +7,16 @@ fun main(args: Array<String>) {
         fail()
     }
 
-    val (feedUrl, destDir) = args
+    val (atomFeedUrl, indexLocation) = args
 
-    if (FeedUpdater.updateFeed(feedUrl, File(destDir, INDEX_FILE).path)) {
-        println("Feed updated")
+    if (IndexUpdater.updateIndex(atomFeedUrl, indexLocation)) {
+        println("Index updated")
     } else {
-        println("Feed not updated")
+        println("Index not updated")
     }
 }
 
 fun fail() {
-    System.err.println("Usage: CommandLineRunner url destdir")
+    System.err.println("Usage: CommandLineRunner OctodexAtomUrl IndexLocation")
     exitProcess(-1)
 }

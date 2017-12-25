@@ -2,14 +2,13 @@ package com.internetitem.octocat
 
 import java.io.File
 import java.io.FileInputStream
-import java.io.FileNotFoundException
 import java.io.FileOutputStream
 
-interface Storage {
+interface IndexStorage {
     fun fetch(name : String) : ByteArray?
     fun store(name : String, data : ByteArray)
 
-    object FilesystemStorage : Storage {
+    object FilesystemIndexStorage : IndexStorage {
         override fun fetch(name: String): ByteArray? {
             val file = File(name)
             if (file.exists() && file.canRead()) {

@@ -1,6 +1,6 @@
 package com.internetitem.octocat
 
-import com.internetitem.octocat.dataModel.OctocatFeed
+import com.internetitem.octocat.dataModel.OctocatIndex
 import com.internetitem.octocat.util.SimpleNamespaceContext
 import com.internetitem.octocat.util.createDocumentBuilder
 import com.internetitem.octocat.util.toZonedDateTime
@@ -21,19 +21,19 @@ object FeedParser {
     val ATOM_NAMESPACE_PREFIX = "atom"
     val HTML_ENTRY_PATH = "/atom:feed/atom:entry/atom:content[@type='html']"
 
-    fun parseFeed(feedBytes: ByteArray): OctocatFeed {
+    fun toOctocatIndex(feedBytes: ByteArray): OctocatIndex {
         val items = bytesToItems(feedBytes)
-        val sortedItems = items.sortedByDescending(OctocatFeed.OctocatFeedItem::updated)
-        return OctocatFeed(sortedItems)
+        val sortedItems = items.sortedByDescending(OctocatIndex.OctocatIndexItem::updated)
+        return OctocatIndex(sortedItems)
 
     }
 
-    private fun bytesToItems(feedBytes: ByteArray): List<OctocatFeed.OctocatFeedItem> {
+    private fun bytesToItems(feedBytes: ByteArray): List<OctocatIndex.OctocatIndexItem> {
         val doc = parseXml(feedBytes)
         fixupHtml(doc)
         val feed = SyndFeedInput().build(doc)
         val itemList = feed.entries.map { entry ->
-            OctocatFeed.OctocatFeedItem(entry.title, entry.link, entry.updatedDate.toZonedDateTime(), extractImageFromFeedEntry(entry))
+            OctocatIndex.OctocatIndexItem(entry.title, entry.link, entry.updatedDate.toZonedDateTime(), extractImageFromFeedEntry(entry))
         }
         return itemList
     }
