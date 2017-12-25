@@ -15,21 +15,21 @@ import javax.xml.xpath.XPathConstants
 import javax.xml.xpath.XPathFactory
 
 
-class FeedParser(val feedSource: FeedSource) {
+object FeedParser {
 
     val ATOM_NAMESPACE = "http://www.w3.org/2005/Atom"
     val ATOM_NAMESPACE_PREFIX = "atom"
     val HTML_ENTRY_PATH = "/atom:feed/atom:entry/atom:content[@type='html']"
 
-    fun downloadFeed(feedUrl: String): OctocatFeed {
-        val entries = fetchFeedEntries(feedUrl)
-        val sortedEntries = entries.sortedByDescending(OctocatFeed.OctocatFeedItem::updated)
-        return OctocatFeed(sortedEntries)
+    fun parseFeed(feedBytes: ByteArray): OctocatFeed {
+        val items = bytesToItems(feedBytes)
+        val sortedItems = items.sortedByDescending(OctocatFeed.OctocatFeedItem::updated)
+        return OctocatFeed(sortedItems)
+
     }
 
-    private fun fetchFeedEntries(feedUrl: String): List<OctocatFeed.OctocatFeedItem> {
-        val feedText = feedSource.fetch(feedUrl)
-        val doc = parseXml(feedText)
+    private fun bytesToItems(feedBytes: ByteArray): List<OctocatFeed.OctocatFeedItem> {
+        val doc = parseXml(feedBytes)
         fixupHtml(doc)
         val feed = SyndFeedInput().build(doc)
         val itemList = feed.entries.map { entry ->

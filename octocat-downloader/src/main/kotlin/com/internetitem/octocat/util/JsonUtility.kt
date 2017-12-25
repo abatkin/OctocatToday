@@ -13,5 +13,5 @@ val OBJECT_MAPPER: ObjectMapper = ObjectMapper()
         .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
         .enable(SerializationFeature.INDENT_OUTPUT)
 
-fun toJson(obj: Any) = OBJECT_MAPPER.writeValueAsBytes(obj)
+fun toJson(obj: Any): ByteArray = OBJECT_MAPPER.writeValueAsBytes(obj)
 

@@ -1,6 +1,7 @@
 package com.internetitem.octocat
 
-import com.internetitem.octocat.dataModel.Configuration
+import com.internetitem.octocat.util.INDEX_FILE
+import java.io.File
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
@@ -9,12 +10,8 @@ fun main(args: Array<String>) {
     }
 
     val (feedUrl, destDir) = args
-    val feedFetcher = FeedSource.fromPath(feedUrl)
-    val storage = Storage.FilesystemStorage
-    val config = Configuration(feedUrl, destDir)
 
-    val updater = FeedUpdater(feedFetcher, storage)
-    if (updater.updateFeed(config)) {
+    if (FeedUpdater.updateFeed(feedUrl, File(destDir, INDEX_FILE).path)) {
         println("Feed updated")
     } else {
         println("Feed not updated")

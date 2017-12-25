@@ -11,6 +11,8 @@ interface FeedSource {
             path.startsWith("http://") || path.startsWith("https://") -> HttpFeedSource
             else -> FileFeedSource
         }
+
+        fun fetchFromSource(source: String) = fromPath(source).fetch(source)
     }
 
     object FileFeedSource : FeedSource {
