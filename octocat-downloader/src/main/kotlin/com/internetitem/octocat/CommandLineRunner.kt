@@ -9,11 +9,8 @@ fun main(args: Array<String>) {
     }
 
     val (feedUrl, destDir) = args
-    val feedFetcher = when {
-        feedUrl.startsWith("http://") -> HttpFeedFetcher()
-        else -> FileFeedFetcher()
-    }
-    val storage = FilesystemStorage()
+    val feedFetcher = FeedSource.fromPath(feedUrl)
+    val storage = Storage.FilesystemStorage
     val config = Configuration(feedUrl, destDir)
 
     val updater = FeedUpdater(feedFetcher, storage)

@@ -15,7 +15,7 @@ import javax.xml.xpath.XPathConstants
 import javax.xml.xpath.XPathFactory
 
 
-class Downloader(val feedFetcher: FeedFetcher) {
+class FeedParser(val feedSource: FeedSource) {
 
     val ATOM_NAMESPACE = "http://www.w3.org/2005/Atom"
     val ATOM_NAMESPACE_PREFIX = "atom"
@@ -28,7 +28,7 @@ class Downloader(val feedFetcher: FeedFetcher) {
     }
 
     private fun fetchFeedEntries(feedUrl: String): List<OctocatFeed.OctocatFeedItem> {
-        val feedText = feedFetcher.fetch(feedUrl)
+        val feedText = feedSource.fetch(feedUrl)
         val doc = parseXml(feedText)
         fixupHtml(doc)
         val feed = SyndFeedInput().build(doc)
@@ -39,7 +39,7 @@ class Downloader(val feedFetcher: FeedFetcher) {
     }
 
     private fun parseXml(feedText: ByteArray): Document {
-        var builder = createDocumentBuilder()
+        val builder = createDocumentBuilder()
         return builder.parse(ByteArrayInputStream(feedText))
     }
 
@@ -49,7 +49,7 @@ class Downloader(val feedFetcher: FeedFetcher) {
     private fun fixupHtml(doc: Document) {
         val xpath = XPathFactory.newInstance().newXPath()
         xpath.namespaceContext = SimpleNamespaceContext(ATOM_NAMESPACE to ATOM_NAMESPACE_PREFIX)
-        var rootElement = doc.documentElement
+        val rootElement = doc.documentElement
         val nodes = xpath.evaluate(HTML_ENTRY_PATH, rootElement, XPathConstants.NODESET) as NodeList
         for (i in 0 until nodes.length) {
             val element = nodes.item(i) as Element
@@ -65,8 +65,8 @@ class Downloader(val feedFetcher: FeedFetcher) {
         return Jsoup.parse(content).select("div a img").attr("src")
     }
 
-    private fun extractFeedEntryContent(entry: SyndEntry): String {
-        return entry.contents
+    private fun extractFeedEntryContent(syndEntry: SyndEntry): String {
+        return syndEntry.contents
                 .filter { entry -> entry.type == "xhtml" || entry.type == "html" }
                 .map { entry -> entry.value }
                 .first()

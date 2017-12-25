@@ -4,9 +4,9 @@ import com.internetitem.octocat.dataModel.Configuration
 import java.io.File
 import java.util.*
 
-class FeedUpdater(val feedFetcher: FeedFetcher, val storage: Storage) {
+class FeedUpdater(val feedSource: FeedSource, val storage: Storage) {
     fun updateFeed(config: Configuration): Boolean {
-        val feed = Downloader(feedFetcher).downloadFeed(config.feedUrl)
+        val feed = FeedParser(feedSource).downloadFeed(config.feedUrl)
         val newFeedJson = feed.toJson()
 
         val feedFilename = File(config.destDir, Configuration.INDEX_FILE).path
