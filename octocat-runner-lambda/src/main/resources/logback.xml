@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+        <resetJUL>true</resetJUL>
+    </contextListener>
+
+
+    <appender name="OUT" class="com.internetitem.octocat.runner.LambdaAppender">
+        <encoder>
+            <pattern>[%d{HH:mm:ss.SSS}] %X{AWSRequestId:-NO_REQUEST_ID} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="OUT" />
+    </root>
+</configuration>
