@@ -1,8 +1,12 @@
-package com.internetitem.octocat
+package com.internetitem.octocat.runner
 
+import com.internetitem.octocat.IndexUpdater
+import org.slf4j.bridge.SLF4JBridgeHandler
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
+    loggingInit()
+
     if (args.size != 2) {
         fail()
     }
@@ -14,6 +18,11 @@ fun main(args: Array<String>) {
     } else {
         println("Index not updated")
     }
+}
+
+fun loggingInit() {
+    SLF4JBridgeHandler.removeHandlersForRootLogger()
+    SLF4JBridgeHandler.install()
 }
 
 fun fail() {
