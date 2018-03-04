@@ -1,3 +1,5 @@
+site/src/data/
+
 .idea/
 *.iml
 
@@ -6,5 +8,6 @@ target/
 .classpath
 .project
 .settings/
+
 
 
