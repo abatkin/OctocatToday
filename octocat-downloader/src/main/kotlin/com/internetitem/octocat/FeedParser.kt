@@ -62,7 +62,7 @@ object FeedParser {
 
     private fun extractImageFromFeedEntry(entry: SyndEntry): String {
         val content = extractFeedEntryContent(entry)
-        val imageUrl = Jsoup.parse(content).select("div a img").attr("src")
+        val imageUrl = Jsoup.parse(content).select("a img").attr("src")
         if (imageUrl.startsWith("http://")) {
             return imageUrl.replaceFirst("http://", "https://")
         } else {
