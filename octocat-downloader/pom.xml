@@ -15,7 +15,7 @@
     <name>octocat-downloader</name>
 
     <properties>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <fuel.version>1.11.0</fuel.version>
         <result.version>1.2.0</result.version>
         <rome.version>1.8.0</rome.version>
